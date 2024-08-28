@@ -13,12 +13,12 @@ const ExploreMenu = ({ category, setCategory }) => {
       </p>
       <div className="explore-menu-list">
         {menu_list.map((menu, i) => (
-          <div 
+          <div  
             onClick={() => 
               setCategory((prev) =>
                 prev === menu.menu_name ? "All" : menu.menu_name
               )
-            }
+            } 
             key={i}
             className="explore-menu-list-item"
           >
