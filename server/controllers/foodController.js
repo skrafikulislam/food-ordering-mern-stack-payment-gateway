@@ -4,7 +4,7 @@ import fs from "fs";
 // add food item
 
 const addFood = async (req, res) => {
-  let image_filename = `${req.file.filename}`;
+  let image_filename = `${req.file?.filename}`;
   const { name, description, price, category } = req.body;
   const food = new foodModel({
     name,
