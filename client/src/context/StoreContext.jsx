@@ -5,6 +5,8 @@ export const StoreContext = createContext(null);
 
 const StoreContextProvider = ({ children }) => {
   const [cartItem, setCartItem] = useState({});
+  const [token, setToken] = useState("");
+  const url = "http://localhost:5000";
 
   // ? Add To Cart Functionality
   const addToCart = (itemId) => {
@@ -32,9 +34,11 @@ const StoreContextProvider = ({ children }) => {
     return totalAmount;
   };
 
-  // useEffect(() => {
-  //   console.log(cartItem);
-  // }, [cartItem]);
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      setToken(localStorage.getItem("token"));
+    }
+  }, []);
 
   const contextValue = {
     food_list,
@@ -43,6 +47,9 @@ const StoreContextProvider = ({ children }) => {
     addToCart,
     removeFromCart,
     getTotalCartAmount,
+    url,
+    token,
+    setToken,
   };
   return (
     <StoreContext.Provider value={contextValue}>
