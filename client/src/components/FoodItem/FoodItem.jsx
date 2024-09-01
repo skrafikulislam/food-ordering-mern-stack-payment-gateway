@@ -4,7 +4,7 @@ import { assets } from "../../assets/assets";
 import { StoreContext } from "../../context/StoreContext";
 
 const FoodItem = ({ id, name, price, description, image }) => {
-  const { cartItem, addToCart, removeFromCart } = useContext(StoreContext);
+  const { cartItem, addToCart, removeFromCart, url } = useContext(StoreContext);
   return (
     //! Using Normal Usestate Cart Add And Remove
     // <div className="food-item">
@@ -45,7 +45,11 @@ const FoodItem = ({ id, name, price, description, image }) => {
     //! Using Context Api Cart Add And Remove
     <div className="food-item">
       <div className="food-item-img-container">
-        <img className="food-item-img" src={image} alt={name} />
+        <img
+          className="food-item-img"
+          src={url+"/images/"+image}
+          alt={name}
+        />
         {!cartItem[id] ? (
           <img
             onClick={() => addToCart(id)}
