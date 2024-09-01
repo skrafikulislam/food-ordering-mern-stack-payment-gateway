@@ -17,6 +17,7 @@ const addFood = async (req, res) => {
     await food.save();
     res.status(200).json({ success: true, message: "Food Added Successfully" });
   } catch (error) {
+    console.log(error);
     res
       .status(500)
       .json({ success: false, message: `Internal Server Error - ${error}` });
@@ -29,6 +30,7 @@ const listFood = async (req, res) => {
     const foods = await foodModel.find({});
     res.status(200).json({ success: true, data: foods });
   } catch (error) {
+    console.log(error);
     res
       .status(500)
       .json({ success: false, message: `Internal Server Error - ${error}` });
@@ -50,6 +52,7 @@ const removeFood = async (req, res) => {
       .status(200)
       .json({ success: true, message: "Food Removed Successfully" });
   } catch (error) {
+    console.log(error);
     res
       .status(500)
       .json({ success: false, message: `Internal Server Error - ${error}` });

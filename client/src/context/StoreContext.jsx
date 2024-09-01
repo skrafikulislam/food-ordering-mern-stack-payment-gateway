@@ -11,17 +11,33 @@ const StoreContextProvider = ({ children }) => {
   const url = "http://localhost:5000";
 
   // ? Add To Cart Functionality
-  const addToCart = (itemId) => {
+  const addToCart = async (itemId) => {
     if (!cartItem[itemId]) {
       setCartItem((prev) => ({ ...prev, [itemId]: 1 }));
     } else {
       setCartItem((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
     }
+    if (token) {
+      await axios
+        .post(url + "/api/cart/add", { itemId }, { headers: { token } })
+        .then((response) => console.log(response + "Added To Cart"))
+        .catch((error) =>
+          console.log(error + "Error Adding Items To Cart Using itemId")
+        );
+    }
   };
 
   // ? Remove From Cart Functionality
-  const removeFromCart = (itemId) => {
+  const removeFromCart = async (itemId) => {
     setCartItem((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
+    if (token) {
+      await axios
+        .post(url + "/api/cart/remove", { itemId }, { headers: { token } })
+        .then((response) => console.log(response + "Removed From Cart"))
+        .catch((error) =>
+          console.log(error + "Error Removing Items From Cart Using itemId")
+        );
+    }
   };
 
   //? Return The Cart Total
@@ -41,12 +57,23 @@ const StoreContextProvider = ({ children }) => {
     setFoodList(response.data.data);
   };
 
+  //? Below code is to prevent refreshing the cart add items to stay even after refreshing the site
+  const loadCartData = async (token) => {
+    const response = await axios.post(
+      url + "/api/cart/get",
+      {},
+      { headers: { token } }
+    );
+
+    setCartItem(response.data.cartData);
+  };
   //? Below logic is for not remove the token on page refresh
   useEffect(() => {
     async function loadData() {
       await fetchFoodList();
       if (localStorage.getItem("token")) {
         setToken(localStorage.getItem("token"));
+        await loadCartData(localStorage.getItem("token"));
       }
     }
     loadData();
